@@ -1,5 +1,6 @@
 package com.takebasic.demospringsecurityapi.service;
 
+import com.takebasic.demospringsecurityapi.model.Role;
 import com.takebasic.demospringsecurityapi.model.User;
 
 import java.util.List;
@@ -12,4 +13,6 @@ public interface UserService {
     void saveUser(User user);
     void removeUser(Long id);
     boolean existsByRolename(String rolename);
+    Role findByRolename(String rolename);
+
 }

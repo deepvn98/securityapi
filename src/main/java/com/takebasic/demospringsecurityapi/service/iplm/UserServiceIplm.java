@@ -19,7 +19,6 @@ import java.util.HashSet;
 import java.util.List;
 
 @Service
-
 public class UserServiceIplm implements UserService, UserDetailsService {
     private static final Logger log = LoggerFactory.getLogger(UserServiceIplm.class);
     @Autowired
@@ -69,6 +68,16 @@ public class UserServiceIplm implements UserService, UserDetailsService {
     @Override
     public boolean existsByRolename(String rolename) {
         return roleRepo.existsByRolename(rolename);
+    }
+
+    @Override
+    public Role findByRolename(String rolename) {
+        Role role = roleRepo.findByRolename(rolename);
+        if (role == null){
+            log.error("not found role in the database!");
+            throw new UsernameNotFoundException("Role not found in the database");
+        }
+        return role;
     }
 
     @Override

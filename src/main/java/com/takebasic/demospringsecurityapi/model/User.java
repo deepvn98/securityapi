@@ -22,14 +22,13 @@ public class User {
     private Long id;
     private String name;
     @NotNull
-    @Column(name = "username",unique = true)
+    @Column(name = "username")
     private String username;
     @NotNull
-    @Column(name = "password")
-    @Size(min = 3,max = 50)
     @JsonIgnore
+    @Column(name = "password")
+    @Size(min = 3,max = 255)
     private String password;
-    @NotNull
     @Email
     private String email;
     @Lob
@@ -44,6 +43,16 @@ public class User {
             })
     private Set<Role> roles;
 
+    public User() {
+    }
+
+    public User(String username, String password, String email, Set<Role> roles) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.roles = roles;
+    }
+
     public User(Long id, String name, String username, String password, String email, String avatar, Set<Role> roles) {
         this.id = id;
         this.name = name;
@@ -54,7 +63,19 @@ public class User {
         this.roles = roles;
     }
 
-    public User() {
+    public User(String name, String username, String password, String email, String avatar, Set<Role> roles) {
+        this.name = name;
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.avatar = avatar;
+        this.roles = roles;
+    }
+
+    public User(String username, String password, Set<Role> roles) {
+        this.username = username;
+        this.password = password;
+        this.roles = roles;
     }
 
     public Long getId() {
