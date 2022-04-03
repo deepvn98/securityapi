@@ -2,18 +2,25 @@ package com.takebasic.demospringsecurityapi.controller;
 
 import com.takebasic.demospringsecurityapi.dto.request.UserDto;
 import com.takebasic.demospringsecurityapi.dto.restspone.Message;
+import com.takebasic.demospringsecurityapi.jwt.JwtTokenProvider;
 import com.takebasic.demospringsecurityapi.model.Role;
 import com.takebasic.demospringsecurityapi.model.User;
 import com.takebasic.demospringsecurityapi.service.UserService;
+import javafx.scene.control.cell.CheckBoxTreeTableCell;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -23,6 +30,12 @@ public class AuthController {
     private final UserService userService;
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
 
     public AuthController(UserService userService) {
         this.userService = userService;
@@ -69,5 +82,7 @@ public class AuthController {
         userService.saveUser(user);
         return new ResponseEntity<>(new Message("done"),HttpStatus.ACCEPTED);
     }
+
+
 }
 
