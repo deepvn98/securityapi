@@ -82,7 +82,14 @@ public class AuthController {
         userService.saveUser(user);
         return new ResponseEntity<>(new Message("done"),HttpStatus.ACCEPTED);
     }
-
+    @PostMapping("api/signin")
+    public ResponseEntity<?> signin(@Valid @RequestBody UserDto userDto){
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(userDto.getUsername(), userDto.getPassword()));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        String token = jwtTokenProvider.generateToken(userDto.getUsername());
+        return new ResponseEntity<>(new Message(token),HttpStatus.OK);
+    }
 
 }
 

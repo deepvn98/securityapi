@@ -1,11 +1,9 @@
 package com.takebasic.demospringsecurityapi.jwt;
 
-import com.takebasic.demospringsecurityapi.model.User;
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
@@ -21,14 +19,13 @@ public class JwtTokenProvider implements Serializable {
     @Value("${jwt.secret}")
     private String secretKey;
 
-    // Tạo ra jwt từ thông login qua authentication
-    public String generateToken(Authentication authentication) {
+    // Tạo ra jwt từ username qua form login
+    public String generateToken(String username) {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + jwtExpiration * 1000);
-        User user = (User) authentication.getPrincipal();
         // Tạo chuỗi json web token từ user tìm được từ form login
         return Jwts.builder()
-                .setSubject(user.getUsername())
+                .setSubject(username)
                 .setIssuedAt(now)
                 .setExpiration(expiryDate)
                 .signWith(SignatureAlgorithm.HS512, secretKey)
